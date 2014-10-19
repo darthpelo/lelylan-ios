@@ -64,23 +64,4 @@
     XCTAssertNotEqual(s1, [self createUniqueInstance]);
 }
 
-//- (void)testAuthenticationRequest {
-//    XCTestExpectation *requestExpectation = [self expectationWithDescription:@"token recived"];
-//    
-//    LLLOauthManager *s1 = [self createUniqueInstance];
-//    
-//    [s1 authenticationRequest:^(id resultData) {
-//        [requestExpectation fulfill];
-//        XCTAssertNotNil(resultData);
-//    } failure:^(NSError *error) {
-//        XCTAssertNil(error);
-//    }];
-//    
-//    [self waitForExpectationsWithTimeout:15.0 handler:^(NSError *error) {
-//        XCTAssertNil(error);
-//    }];
-//}
-
-
-
 @end
