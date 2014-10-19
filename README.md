@@ -1,4 +1,4 @@
 lelylan-ios
 ===========
 
-Lelylan iOS library
+Lelylan iOS library **work in progress**
