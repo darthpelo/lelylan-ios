@@ -1,6 +1,6 @@
-FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/OAuth.io/Dist"
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/OAuth.io"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AFNetworking" -isystem "${PODS_ROOT}/Headers/Public/OAuth.io"
-OTHER_LDFLAGS = -ObjC -l"Pods-lelylan-ios-AFNetworking" -l"Pods-lelylan-ios-OAuth.io" -framework "CoreGraphics" -framework "MobileCoreServices" -framework "OAuthiOS" -framework "Security" -framework "SystemConfiguration"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 $(inherited) PMK_NSNOTIFICATIONCENTER=1 $(inherited) PMK_NSURLCONNECTION=1 $(inherited) PMK_PAUSE=1 $(inherited) PMK_UIACTIONSHEET=1 $(inherited) PMK_UIALERTVIEW=1 $(inherited) PMK_UIVIEW=1 $(inherited) PMK_UIVIEWCONTROLLER=1 $(inherited) PMK_UNTIL=1 $(inherited) PMK_WHEN=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/FDKeychain" "${PODS_ROOT}/Headers/Public/NXOAuth2Client" "${PODS_ROOT}/Headers/Public/OMGHTTPURLRQ" "${PODS_ROOT}/Headers/Public/PromiseKit"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AFNetworking" -isystem "${PODS_ROOT}/Headers/Public/FDKeychain" -isystem "${PODS_ROOT}/Headers/Public/NXOAuth2Client" -isystem "${PODS_ROOT}/Headers/Public/OMGHTTPURLRQ" -isystem "${PODS_ROOT}/Headers/Public/PromiseKit"
+OTHER_LDFLAGS = -ObjC -l"Pods-lelylan-ios-AFNetworking" -l"Pods-lelylan-ios-FDKeychain" -l"Pods-lelylan-ios-NXOAuth2Client" -l"Pods-lelylan-ios-OMGHTTPURLRQ" -l"Pods-lelylan-ios-PromiseKit" -framework "CoreGraphics" -framework "Foundation" -framework "MobileCoreServices" -framework "Security" -framework "SystemConfiguration" -framework "UIKit" -weak_framework "AssetsLibrary"
+OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
 PODS_ROOT = ${SRCROOT}/Pods

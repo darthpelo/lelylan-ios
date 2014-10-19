@@ -20,14 +20,64 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - OAuth.io (1.2.0)
+  - FDKeychain (1.0.1)
+  - NXOAuth2Client (1.2.8)
+  - OMGHTTPURLRQ (2.1):
+    - OMGHTTPURLRQ/FormURLEncode
+    - OMGHTTPURLRQ/RQ
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/FormURLEncode (2.1):
+    - OMGHTTPURLRQ/FormURLEncode
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/RQ (2.1):
+    - OMGHTTPURLRQ/FormURLEncode
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/UserAgent (2.1):
+    - OMGHTTPURLRQ/FormURLEncode
+    - OMGHTTPURLRQ/UserAgent
+  - PromiseKit (1.0):
+    - PromiseKit/NSNotificationCenter
+    - PromiseKit/NSURLConnection
+    - PromiseKit/Pause
+    - PromiseKit/UIActionSheet
+    - PromiseKit/UIAlertView
+    - PromiseKit/UIView
+    - PromiseKit/UIViewController
+    - PromiseKit/Until
+    - PromiseKit/When
+  - PromiseKit/NSNotificationCenter (1.0):
+    - PromiseKit/Promise
+  - PromiseKit/NSURLConnection (1.0):
+    - OMGHTTPURLRQ
+    - PromiseKit/Promise
+  - PromiseKit/Pause (1.0):
+    - PromiseKit/Promise
+  - PromiseKit/Promise (1.0)
+  - PromiseKit/UIActionSheet (1.0):
+    - PromiseKit/Promise
+  - PromiseKit/UIAlertView (1.0):
+    - PromiseKit/Promise
+  - PromiseKit/UIView (1.0):
+    - PromiseKit/Promise
+  - PromiseKit/UIViewController (1.0):
+    - PromiseKit/Promise
+  - PromiseKit/Until (1.0):
+    - PromiseKit/Promise
+    - PromiseKit/When
+  - PromiseKit/When (1.0):
+    - PromiseKit/Promise
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
-  - OAuth.io
+  - FDKeychain (~> 1.0.0)
+  - NXOAuth2Client (~> 1.2.8)
+  - PromiseKit (~> 1.0)
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
-  OAuth.io: 8d8afdbae0b8bae35c11da591ae29002edca2c21
+  FDKeychain: 2c1a34b3d4fa6f8c53b2b57bb31fe76c7ed67cc4
+  NXOAuth2Client: fa81be68c9ce628202028ae037c9c92cfbb37865
+  OMGHTTPURLRQ: 16564bcee86d8dfa298b65cdf60015c3065f67df
+  PromiseKit: 3a8eb40bb66c8f74ebd629f03ad8b0d5581a744c
 
-COCOAPODS: 0.34.2
+COCOAPODS: 0.34.4

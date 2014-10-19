@@ -1,0 +1,5 @@
+#include "Pods-lelylan-ios-PromiseKit.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 ${PODS_LELYLAN_IOS_PROMISEKIT_GCC_PREPROCESSOR_DEFINITIONS}
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/PromiseKit" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/FDKeychain" "${PODS_ROOT}/Headers/Public/NXOAuth2Client" "${PODS_ROOT}/Headers/Public/OMGHTTPURLRQ" "${PODS_ROOT}/Headers/Public/PromiseKit"
+OTHER_LDFLAGS = ${PODS_LELYLAN_IOS_PROMISEKIT_OTHER_LDFLAGS} -ObjC
+PODS_ROOT = ${SRCROOT}

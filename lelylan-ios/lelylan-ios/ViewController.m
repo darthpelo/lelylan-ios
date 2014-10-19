@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 
+#import "LLLOauthManager.h"
+
 @interface ViewController ()
 
 @end
@@ -17,6 +19,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+ 
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObject:@"resources"]];
 }
 
 - (void)didReceiveMemoryWarning {
