@@ -26,7 +26,7 @@
 {
     [super viewDidAppear:animated];
     
-    [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObject:@"resources"]];
+//    [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObject:@"resources"]];
 }
 
 - (void)didReceiveMemoryWarning {
