@@ -25,6 +25,9 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    /**
+     *  Token request after user login on Lyelyna home page
+     */
     [[LLLOauthManager sharedInstance] authenticationOpenURL:url];
     
     return YES;

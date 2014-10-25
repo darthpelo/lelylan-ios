@@ -108,6 +108,7 @@ static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devi
          }];
 }
 
+#warning SERVER ERROR: code 500
 - (void)createDevice:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -130,6 +131,7 @@ static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devi
 
 }
 
+#warning SERVER ERROR: code 500
 - (void)updateDevice:(NSString *)deviceID parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -153,6 +155,12 @@ static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devi
              failure(error);
          }
      ];
+}
+
+#warning WORK IN PROGRESS
+- (void)updateDeviceProperties:(NSString *)deviceID properties:(NSDictionary *)properties success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    
 }
 
 - (void)deleteDevice:(NSString *)deviceID success:(void (^)(id))success failure:(void (^)(NSError *))failure
