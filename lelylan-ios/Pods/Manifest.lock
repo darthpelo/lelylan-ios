@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - DLLog (1.0.1)
   - FDKeychain (1.0.1)
   - NXOAuth2Client (1.2.8)
   - OMGHTTPURLRQ (2.1):
@@ -69,12 +70,14 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
+  - DLLog (~> 1.0.1)
   - FDKeychain (~> 1.0.0)
   - NXOAuth2Client (~> 1.2.8)
   - PromiseKit (~> 1.0)
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
+  DLLog: 72ee31e3934ec41e213997418c8c9950a80103bb
   FDKeychain: 2c1a34b3d4fa6f8c53b2b57bb31fe76c7ed67cc4
   NXOAuth2Client: fa81be68c9ce628202028ae037c9c92cfbb37865
   OMGHTTPURLRQ: 16564bcee86d8dfa298b65cdf60015c3065f67df

@@ -4,11 +4,13 @@ platform :ios, '8.0'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'lelylan-ios' do
+
 pod 'AFNetworking', '~> 2.0'
-#pod 'AFOAuth2Client', :git => 'https://github.com/mlwelles/AFOAuth2Client'
 pod 'NXOAuth2Client', '~> 1.2.8'
 pod 'PromiseKit', '~> 1.0'
 pod "FDKeychain", "~> 1.0.0"
+pod 'DLLog', '~> 1.0.1'
+
 end
 
 target 'lelylan-iosTests' do
