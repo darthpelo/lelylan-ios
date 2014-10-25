@@ -13,6 +13,7 @@
 #import "DLLog.h"
 
 static NSString * const kGetDeviceURL = @"http://api.lelylan.com/devices/";
+static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devices/%@/privates";
 
 @interface LLLDevicesManager ()
 @property (nonatomic, strong) NSDictionary *tokenData;
@@ -66,6 +67,28 @@ static NSString * const kGetDeviceURL = @"http://api.lelylan.com/devices/";
     }];
 }
 
+- (void)getDevicePrivate:(NSString *)deviceID success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    // Headers
+    NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
+    [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+    
+    // URL
+    NSString *URL = [NSString stringWithFormat:@"%@%@",kGetDevicePrivateInfoURL, deviceID];
+    
+    [manager GET:URL
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             DLLogDebug(@"%@", responseObject);
+             success(responseObject);
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             DLLogError(@"%@", error.debugDescription);
+             failure(error);
+         }];
+}
+
 - (void)getAllDevices:(NSDictionary *)parameters success:(void(^)(NSArray *devices))success failure:(void(^)(NSError *error))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -83,6 +106,76 @@ static NSString * const kGetDeviceURL = @"http://api.lelylan.com/devices/";
              DLLogError(@"%@", error.debugDescription);
              failure(error);
          }];
+}
+
+- (void)createDevice:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    // Headers
+    NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
+    [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [manager POST:kGetDeviceURL
+       parameters:parameters
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              DLLogDebug(@"%@", responseObject);
+              success(responseObject);
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              DLLogError(@"%@", error.debugDescription);
+              failure(error);
+          }
+     ];
+
+}
+
+- (void)updateDevice:(NSString *)deviceID parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    // Headers
+    NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
+    [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    // URL
+    NSString *URL = [NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID];
+    
+    [manager PUT:URL
+      parameters:parameters
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             DLLogDebug(@"%@", responseObject);
+             success(responseObject);
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             DLLogError(@"%@", error.debugDescription);
+             failure(error);
+         }
+     ];
+}
+
+- (void)deleteDevice:(NSString *)deviceID success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    // Headers
+    NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
+    [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+    
+    // URL
+    NSString *URL = [NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID];
+    
+    [manager DELETE:URL
+         parameters:nil
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                DLLogDebug(@"%@", responseObject);
+                success(responseObject);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                DLLogError(@"%@", error.debugDescription);
+                failure(error);
+            }
+     ];
 }
 
 @end

@@ -112,4 +112,95 @@
     }];
 }
 
+- (void)testCreateDeviceMethods {
+    NSDictionary *parameters = @{
+                                 @"name":@"testThirdDevice",
+                                 @"type":@{
+                                         @"id":@"518be5a700045e1521000001"
+                                         },
+                                 @"physical":@{
+                                         @"uri":@"http://api.lelylan.com/properties/518c9c41a2c03fac5a000001"
+                                         }
+                                 };
+    LLLDevicesManager *s1 = [self createUniqueInstance];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"create device"];
+    
+    [s1 createDevice:parameters
+             success:^(id responseData) {
+                 XCTAssertNotNil(responseData);
+                 
+                 [expectation fulfill];
+             } failure:^(NSError *error) {
+                 XCTAssertNil(error);
+                 
+                 [expectation fulfill];
+             }
+     ];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        XCTAssertNil(error);
+    }];
+}
+
+- (void)testDeleteDeviceMethods {
+    LLLDevicesManager *s1 = [self createUniqueInstance];
+    
+    //
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"delete device"];
+
+    [s1 deleteDevice:@"54458eacb9bd467e6d000001"
+             success:^(id responseData) {
+                 XCTAssertNotNil(responseData);
+                 
+                 [expectation fulfill];
+             }
+             failure:^(NSError *error) {
+                 XCTAssertNil(error);
+                 
+                 [expectation fulfill];
+             }
+     ];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        XCTAssertNil(error);
+    }];
+}
+
+- (void)testUpdateADeviceMethod {
+    NSString *deviceID = @"544b8851e723c25f0c00001a";
+    
+    NSDictionary *parameters = @{
+                                 @"name":@"testThirdDevice",
+                                 @"type":@{
+                                         @"id":@"518be5a700045e1521000001"
+                                         },
+                                 @"physical":@{
+                                         @"uri":@"http://api.lelylan.com/properties/518c9c41a2c03fac5a000001"
+                                         }
+                                 };
+    LLLDevicesManager *s1 = [self createUniqueInstance];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"create device"];
+    
+    [s1 updateDevice:deviceID
+          parameters:parameters
+             success:^(id responseData) {
+                 XCTAssertNotNil(responseData);
+                 
+                 [expectation fulfill];
+             }
+             failure:^(NSError *error) {
+                 XCTAssertNil(error);
+                 
+                 [expectation fulfill];
+             }
+     ];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        XCTAssertNil(error);
+    }];
+}
+
 @end
