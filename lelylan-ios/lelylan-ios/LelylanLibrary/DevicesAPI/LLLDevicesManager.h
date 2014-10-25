@@ -25,15 +25,15 @@
  *  Returns private information for a given device identified from its ID.
  *
  *  @param deviceID The ID of the desired device.
- *  @param success  A block with a parameter that rappresents the extended information
+ *  @param success  A block with a parameter that rappresents the private information
  *  @param failure  failure block
  */
 - (void)getDevicePrivate:(NSString *)deviceID success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure;
 
 /**
- *  <#Description#>
+ *  Returns a list of owned devices.
  *
- *  @param parameters Returns a list of owned devices.
+ *  @param parameters See online documentations: http://dev.lelylan.com/developers#get-all-devices
  *  @param success    A block with a parameter that rappresents an Array with the owned devices
  *  @param failure    failure block
  */
