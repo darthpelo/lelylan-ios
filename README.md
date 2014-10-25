@@ -1,7 +1,10 @@
 lelylan-ios
 ===========
 
-Lelylan iOS library **work in progress**
+[Lelylan](http://www.lelylan.com/) iOS library **work in progress**
+
+Building the Connected Home with a unified APIs and tools that instantly enable
+businesses to sell connected products
 
 Components tested and completed.
 ===========
