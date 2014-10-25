@@ -29,7 +29,7 @@
     /**
      *  OAuth 2.0 request with generic scope.
      */
-//    [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObject:@"resources"]];
+//    [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObjects:@"resources", @"devices", nil]];
 }
 
 - (void)didReceiveMemoryWarning {

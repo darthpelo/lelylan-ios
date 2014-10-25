@@ -114,14 +114,18 @@
 
 - (void)testCreateDeviceMethods {
     NSDictionary *parameters = @{
-                                 @"name":@"testThirdDevice",
-                                 @"type":@{
-                                         @"id":@"518be5a700045e1521000001"
-                                         },
-                                 @"physical":@{
-                                         @"uri":@"http://api.lelylan.com/properties/518c9c41a2c03fac5a000001"
-                                         }
+                                 @"name":@"test Third Device",
+                                 @"type":@{@"id":@"518be84900045e1521000007"},
+                                 @"physical": @{ @"uri": @"http://pluto.com"}
                                  };
+    /*
+     @{
+     @"name": @"Closet dimmer",
+     @"type": @{ @"id": @"518be84900045e1521000007" },
+     @"physical": @{ @"uri": @"http://pluto.com" }
+     };
+     */
+    
     LLLDevicesManager *s1 = [self createUniqueInstance];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"create device"];

@@ -108,26 +108,58 @@ static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devi
          }];
 }
 
-#warning SERVER ERROR: code 500
 - (void)createDevice:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    // Headers
+    NSURL *url = [NSURL URLWithString:kGetDeviceURL];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
-    [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    config.HTTPAdditionalHeaders = @{
+                                     @"Authorization": value,
+                                     @"Content-Type"  : @"application/json"
+                                     };
     
-    [manager POST:kGetDeviceURL
-       parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              DLLogDebug(@"%@", responseObject);
-              success(responseObject);
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              DLLogError(@"%@", error.debugDescription);
-              failure(error);
-          }
-     ];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"POST";
+
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:parameters
+                                                   options:kNilOptions error:&error];
+    
+    if (!error) {
+        NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
+                                                                   fromData:data
+                                                          completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+                                                              if (!error) {
+                                                                  NSError* error;
+                                                                  NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                       options:kNilOptions
+                                                                                                                         error:&error];
+                                                                  if (!error) {
+                                                                      DLLogDebug(@"%@", json);
+                                                                      
+                                                                      if (json[@"error"]) {
+                                                                          NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey: json[@"error"][@"description"]};
+                                                                          error = [[NSError alloc] initWithDomain:json[@"error"][@"code"]
+                                                                                                             code:[json[@"status"] integerValue]
+                                                                                                         userInfo:errorDictionary];
+                                                                          
+                                                                          failure(error);
+                                                                      } else {
+                                                                          success(json);
+                                                                      }
+                                                                  } else {
+                                                                      failure(error);
+                                                                  }
+                                                              } else {
+                                                                  failure(error);
+                                                              }
+                                                          }
+                                              ];
+        
+        [uploadTask resume];
+    }
 
 }
 
