@@ -24,27 +24,50 @@ With the Lelylan's server response, this method send the token request:
 Devices API
 ===========
 
-Returns extended information for a given device identified from its ID:
+* Returns extended information for a given device identified from its ID:
 ```Objective-C
 - (void)getDevice:(NSString *)deviceID 
           success:(void(^)(NSDictionary *device))success 
           failure:(void(^)(NSError *error))failure;
 ```
 
-Returns private information for a given device identified from its ID:
+* Returns private information for a given device identified from its ID:
 ```Objective-C
 - (void)getDevicePrivate:(NSString *)deviceID
                  success:(void(^)(id responseData))success 
                  failure:(void(^)(NSError *error))failure;
 ```
-Returns a list of owned devices:
+* Returns a list of owned devices:
 ```Objective-C
 - (void)getAllDevices:(NSDictionary *)parameters 
               success:(void(^)(NSArray *devices))success 
               failure:(void(^)(NSError *error))failure;
 ```
+* Create a device and returns extended information for it:
+```Objective-C
+- (void)createDevice:(NSDictionary *)parameters 
+             success:(void(^)(id responseData))success 
+             failure:(void(^)(NSError *error))failure;
+```
 
-Delete a device identified from its ID and return extended information for it:
+* Update a device identified from its ID and returns extended information for it:
+```Objective-C
+- (void)updateDevice:(NSString *)deviceID 
+          parameters:(NSDictionary *)parameters 
+             success:(void(^)(id responseData))success 
+             failure:(void(^)(NSError *error))failure;
+```
+
+* Update properties on a device identified from its ID and returns extended representation for it. If a physical device is connected, Lelylan forward the changes to the physical world:
+```Objective-C
+- (void)updateDeviceProperties:(NSString *)deviceID 
+          properties:(NSDictionary *)properties 
+             success:(void(^)(id responseData))success 
+             failure:(void(^)(NSError *error))failure;
+```
+
+
+* Delete a device identified from its ID and return extended information for it:
 ```Objective-C
 - (void)deleteDevice:(NSString *)deviceID 
              success:(void(^)(id responseData))success 
