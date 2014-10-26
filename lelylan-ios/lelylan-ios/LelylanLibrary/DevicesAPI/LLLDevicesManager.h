@@ -61,8 +61,12 @@
 - (void)updateDevice:(NSString *)deviceID parameters:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure;
 
 /**
- *  Work in progress
+ *  Update properties on a device identified from its ID and returns extended representation for it. If a physical device is connected, Lelylan forward the changes to the physical world.
  *
+ *  @param deviceID   The ID of the desired device.
+ *  @param properties A NSDictionary with NSArray of properties to change. See online documentations: http://dev.lelylan.com/developers#update-device-properties
+ *  @param success    A block with parameter that returns extended information for the device.
+ *  @param failure    failure block.
  */
 - (void)updateDeviceProperties:(NSString *)deviceID properties:(NSDictionary *)properties success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure;
 

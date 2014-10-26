@@ -77,7 +77,7 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
     [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
     
     // URL
-    NSString *URL = [NSString stringWithFormat:@"%@%@",kGetDevicePrivateInfoURL, deviceID];
+    NSString *URL = [NSString stringWithFormat:kGetDevicePrivateInfoURL, deviceID];
     
     [manager GET:URL
       parameters:nil
@@ -113,6 +113,7 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 - (void)createDevice:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure
 {
     NSURL *url = [NSURL URLWithString:kGetDeviceURL];
+    
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
     config.HTTPAdditionalHeaders = @{
@@ -168,6 +169,7 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 - (void)updateDevice:(NSString *)deviceID parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID]];
+    
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
     config.HTTPAdditionalHeaders = @{
@@ -219,13 +221,64 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
     }
 }
 
-#warning WORK IN PROGRESS
 - (void)updateDeviceProperties:(NSString *)deviceID properties:(NSDictionary *)properties success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
+    NSString *strUrl = [NSString stringWithFormat:kPutDevicePropertiesURL, deviceID];
+    NSURL *url = [NSURL URLWithString:strUrl];
     
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
+    config.HTTPAdditionalHeaders = @{
+                                     @"Authorization": value,
+                                     @"Content-Type"  : @"application/json"
+                                     };
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"PUT";
+    
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:properties
+                                                   options:kNilOptions error:&error];
+    
+    if (!error) {
+        NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
+                                                                   fromData:data
+                                                          completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+                                                              if (!error) {
+                                                                  NSError* error;
+                                                                  NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                       options:kNilOptions
+                                                                                                                         error:&error];
+                                                                  if (!error) {
+                                                                      DLLogDebug(@"%@", json);
+                                                                      
+                                                                      if (json[@"error"]) {
+                                                                          NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey: json[@"error"][@"description"]};
+                                                                          error = [[NSError alloc] initWithDomain:json[@"error"][@"code"]
+                                                                                                             code:[json[@"status"] integerValue]
+                                                                                                         userInfo:errorDictionary];
+                                                                          
+                                                                          failure(error);
+                                                                      } else {
+                                                                          success(json);
+                                                                      }
+                                                                  } else {
+                                                                      failure(error);
+                                                                  }
+                                                              } else {
+                                                                  failure(error);
+                                                              }
+                                                          }
+                                              ];
+        
+        [uploadTask resume];
+    }
 }
 
 #pragma mark DELETE method
+
 - (void)deleteDevice:(NSString *)deviceID success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

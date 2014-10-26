@@ -71,7 +71,8 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"device"];
     
-    NSString *deviceID = @"54456eedb9bd462084000001";
+    NSString *deviceID = @"544bb0fee723c25f0c000025";
+    
     [s1 getDevice:deviceID
           success:^(id responseData) {
               XCTAssertNotNil(responseData);
@@ -90,7 +91,32 @@
     }];
 }
 
-- (void)testGetAllDevicesMethods {
+- (void)testGetDevicePrivateMethod {
+    LLLDevicesManager *s1 = [self createUniqueInstance];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"device"];
+    
+    NSString *deviceID = @"544bb0fee723c25f0c000025";
+    
+    [s1 getDevicePrivate:deviceID
+          success:^(id responseData) {
+              XCTAssertNotNil(responseData);
+              
+              [expectation fulfill];
+          }
+          failure:^(NSError *error) {
+              XCTAssertNil(error);
+              
+              [expectation fulfill];
+          }
+     ];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        XCTAssertNil(error);
+    }];
+}
+
+- (void)DISABLED_testGetAllDevicesMethods {
     LLLDevicesManager *s1 = [self createUniqueInstance];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"devices"];
@@ -112,7 +138,7 @@
     }];
 }
 
-- (void)testCreateDeviceMethods {
+- (void)DISABLED_testCreateDeviceMethods {
     NSDictionary *parameters = @{
                                  @"name": @"Closet dimmer",
                                  @"type": @{ @"id": @"518be84900045e1521000007" },
@@ -141,7 +167,7 @@
     }];
 }
 
-- (void)testDeleteDeviceMethods {
+- (void)DISABLED_testDeleteDeviceMethods {
     LLLDevicesManager *s1 = [self createUniqueInstance];
     
     //
@@ -177,10 +203,43 @@
                                  };
     LLLDevicesManager *s1 = [self createUniqueInstance];
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"create device"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"update device"];
     
     [s1 updateDevice:deviceID
           parameters:parameters
+             success:^(id responseData) {
+                 XCTAssertNotNil(responseData);
+                 
+                 [expectation fulfill];
+             }
+             failure:^(NSError *error) {
+                 XCTAssertNil(error);
+                 
+                 [expectation fulfill];
+             }
+     ];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        XCTAssertNil(error);
+    }];
+}
+
+- (void)testUpdateDevicePropertiesMethod {
+    NSString *deviceID = @"544bb0fee723c25f0c000025";
+    
+    NSDictionary *properties = @{
+                            @"properties": @[
+                                    @{@"id":@"518be88300045e0610000008",
+                                      @"value":@"on"
+                                      }
+                                    ]
+                            };
+    LLLDevicesManager *s1 = [self createUniqueInstance];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"update device"];
+    
+    [s1 updateDeviceProperties:deviceID
+          properties:properties
              success:^(id responseData) {
                  XCTAssertNotNil(responseData);
                  
