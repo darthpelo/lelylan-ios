@@ -114,17 +114,11 @@
 
 - (void)testCreateDeviceMethods {
     NSDictionary *parameters = @{
-                                 @"name":@"test Third Device",
-                                 @"type":@{@"id":@"518be84900045e1521000007"},
-                                 @"physical": @{ @"uri": @"http://pluto.com"}
+                                 @"name": @"Closet dimmer",
+                                 @"type": @{ @"id": @"518be84900045e1521000007" },
+                                 @"physical": @{ @"uri": @"http://pluto.com" }
                                  };
-    /*
-     @{
-     @"name": @"Closet dimmer",
-     @"type": @{ @"id": @"518be84900045e1521000007" },
-     @"physical": @{ @"uri": @"http://pluto.com" }
-     };
-     */
+
     
     LLLDevicesManager *s1 = [self createUniqueInstance];
     
@@ -154,7 +148,7 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"delete device"];
 
-    [s1 deleteDevice:@"54458eacb9bd467e6d000001"
+    [s1 deleteDevice:@"544cdc6055d3a495d200003f"
              success:^(id responseData) {
                  XCTAssertNotNil(responseData);
                  
@@ -173,15 +167,12 @@
 }
 
 - (void)testUpdateADeviceMethod {
-    NSString *deviceID = @"544b8851e723c25f0c00001a";
+    NSString *deviceID = @"544bb0fee723c25f0c000025";
     
     NSDictionary *parameters = @{
-                                 @"name":@"testThirdDevice",
+                                 @"name":@"pippo pluto",
                                  @"type":@{
-                                         @"id":@"518be5a700045e1521000001"
-                                         },
-                                 @"physical":@{
-                                         @"uri":@"http://api.lelylan.com/properties/518c9c41a2c03fac5a000001"
+                                         @"id":@"518be84900045e1521000007"
                                          }
                                  };
     LLLDevicesManager *s1 = [self createUniqueInstance];

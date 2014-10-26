@@ -40,14 +40,23 @@
 - (void)getAllDevices:(NSDictionary *)parameters success:(void(^)(NSArray *devices))success failure:(void(^)(NSError *error))failure;
 
 /**
- *  Work in progress
+ *  Create a device and returns extended information for it.
  *
+ *  @param parameters A NSDictionary with @b name and @b type.id. See online documentations: http://dev.lelylan.com/developers#create-a-device
+ *  @param success    A block with a parameter that rappresents the device's struct.
+ *  @param failure    failure block.
  */
 - (void)createDevice:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure;
 
 /**
- *  Work in progress
+ *  Update a device identified from its ID and returns extended information for it.
  *
+ *  @note The device type can't be updated.
+ *
+ *  @param deviceID   The ID of the desired device.
+ *  @param parameters A NSDictionary with the new @b name. See online documentations: http://dev.lelylan.com/developers#create-a-device
+ *  @param success    A block with parameter that returns extended information for the device.
+ *  @param failure    failure block.
  */
 - (void)updateDevice:(NSString *)deviceID parameters:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure;
 

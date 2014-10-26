@@ -14,6 +14,7 @@
 
 static NSString * const kGetDeviceURL = @"http://api.lelylan.com/devices/";
 static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devices/%@/privates";
+static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devices/%@/properties";
 
 @interface LLLDevicesManager ()
 @property (nonatomic, strong) NSDictionary *tokenData;
@@ -44,7 +45,7 @@ static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devi
 }
 
 #pragma mark - Public methods
-
+#pragma mark GET methods
 - (void)getDevice:(NSString *)deviceID success:(void(^)(NSDictionary *device))success failure:(void(^)(NSError *error))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -108,6 +109,7 @@ static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devi
          }];
 }
 
+#pragma mark POST methods
 - (void)createDevice:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure
 {
     NSURL *url = [NSURL URLWithString:kGetDeviceURL];
@@ -163,30 +165,58 @@ static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devi
 
 }
 
-#warning SERVER ERROR: code 500
 - (void)updateDevice:(NSString *)deviceID parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    // Headers
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID]];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
-    [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    config.HTTPAdditionalHeaders = @{
+                                     @"Authorization": value,
+                                     @"Content-Type"  : @"application/json"
+                                     };
     
-    // URL
-    NSString *URL = [NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
     
-    [manager PUT:URL
-      parameters:parameters
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             DLLogDebug(@"%@", responseObject);
-             success(responseObject);
-         }
-         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-             DLLogError(@"%@", error.debugDescription);
-             failure(error);
-         }
-     ];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"PUT";
+    
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:parameters
+                                                   options:kNilOptions error:&error];
+    
+    if (!error) {
+        NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
+                                                                   fromData:data
+                                                          completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+                                                              if (!error) {
+                                                                  NSError* error;
+                                                                  NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                       options:kNilOptions
+                                                                                                                         error:&error];
+                                                                  if (!error) {
+                                                                      DLLogDebug(@"%@", json);
+                                                                      
+                                                                      if (json[@"error"]) {
+                                                                          NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey: json[@"error"][@"description"]};
+                                                                          error = [[NSError alloc] initWithDomain:json[@"error"][@"code"]
+                                                                                                             code:[json[@"status"] integerValue]
+                                                                                                         userInfo:errorDictionary];
+                                                                          
+                                                                          failure(error);
+                                                                      } else {
+                                                                          success(json);
+                                                                      }
+                                                                  } else {
+                                                                      failure(error);
+                                                                  }
+                                                              } else {
+                                                                  failure(error);
+                                                              }
+                                                          }
+                                              ];
+        
+        [uploadTask resume];
+    }
 }
 
 #warning WORK IN PROGRESS
@@ -195,6 +225,7 @@ static NSString * const kGetDevicePrivateInfoURL = @"http://api.lelylan.com/devi
     
 }
 
+#pragma mark DELETE method
 - (void)deleteDevice:(NSString *)deviceID success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
