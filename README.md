@@ -78,7 +78,24 @@ With the Lelylan's server response, this method send the token request:
              failure:(void(^)(NSError *error))failure;
 ```
 
+Feedback
+===========
+
+Use the [issue tracker](http://github.com/darthpelo/lelylan-ios/issues) for bugs.
+[Mail](mailto:darthpelo@gmail.com) or [Tweet](http://twitter.com/darthpelo) me for any feedback.
+
+Links
+===========
+
+* [GIT Repository](http://github.com/darthpelo/lelylan-ios)
+* [Lelylan Dev Center](http://dev.lelylan.com)
+* [Lelylan Site](http://lelylan.com)
+
+Authors
+===========
+(Alessio Roberto)[http://www.twitter.com/darthpelo)
+
 Credits
 ===========
 
-[Andrea Reginato](https://github.com/andreareginato)
+Thanks to [Andrea Reginato](https://github.com/andreareginato)
