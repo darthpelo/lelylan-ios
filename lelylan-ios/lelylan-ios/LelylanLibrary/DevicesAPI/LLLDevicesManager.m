@@ -7,6 +7,7 @@
 //
 
 #import "LLLDevicesManager.h"
+#import "LLLOauthManager.h"
 
 #import "FDKeychain.h"
 #import "AFNetworking.h"
@@ -33,12 +34,7 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 - (instancetype)init
 {
     if (self = [super init]) {
-        NSError *error;
-        _tokenData = [FDKeychain itemForKey:@"com.lelylanios.tokendata"
-                                 forService:@"lelylan"
-                                      error:&error
-                      ];
-        NSAssert(!error, @"Failed retrive token");
+        [self getToken];
     }
     
     return self;
@@ -49,6 +45,11 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 - (void)getDevice:(NSString *)deviceID success:(void(^)(NSDictionary *device))success failure:(void(^)(NSError *error))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    // Check token
+    if (!self.tokenData) {
+        [self getToken];
+    }
     
     // Headers
     NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
@@ -72,6 +73,11 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
+    // Check token
+    if (!self.tokenData) {
+        [self getToken];
+    }
+    
     // Headers
     NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
     [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
@@ -94,6 +100,11 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
+    // Check token
+    if (!self.tokenData) {
+        [self getToken];
+    }
+    
     // Headers
     NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
     [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
@@ -112,6 +123,11 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 #pragma mark POST methods
 - (void)createDevice:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure
 {
+    // Check token
+    if (!self.tokenData) {
+        [self getToken];
+    }
+    
     NSURL *url = [NSURL URLWithString:kGetDeviceURL];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -168,6 +184,11 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 
 - (void)updateDevice:(NSString *)deviceID parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
+    // Check token
+    if (!self.tokenData) {
+        [self getToken];
+    }
+    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID]];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -223,6 +244,11 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 
 - (void)updateDeviceProperties:(NSString *)deviceID properties:(NSDictionary *)properties success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
+    // Check token
+    if (!self.tokenData) {
+        [self getToken];
+    }
+    
     NSString *strUrl = [NSString stringWithFormat:kPutDevicePropertiesURL, deviceID];
     NSURL *url = [NSURL URLWithString:strUrl];
     
@@ -283,6 +309,11 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
+    // Check token
+    if (!self.tokenData) {
+        [self getToken];
+    }
+    
     // Headers
     NSString *value = [NSString stringWithFormat:@"Bearer %@", self.tokenData[@"access_token"]];
     [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
@@ -300,6 +331,23 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
                 failure(error);
             }
      ];
+}
+
+#pragma mark - Private methods
+- (void)getToken
+{
+    NSError *error;
+    _tokenData = [FDKeychain itemForKey:@"com.lelylanios.tokendata"
+                             forService:@"lelylan"
+                                  error:&error
+                  ];
+//    NSAssert(!error, @"Failed retrive token");
+    if (error) {
+        /**
+         *  OAuth 2.0 request with generic scope.
+         */
+        [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObjects:@"resources", @"privates", nil]];
+    }
 }
 
 @end
