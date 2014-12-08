@@ -1,71 +1,68 @@
 PODS:
-  - AFNetworking (2.4.1):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
+  - AFNetworking (2.5.0):
+    - AFNetworking/NSURLConnection (= 2.5.0)
+    - AFNetworking/NSURLSession (= 2.5.0)
+    - AFNetworking/Reachability (= 2.5.0)
+    - AFNetworking/Security (= 2.5.0)
+    - AFNetworking/Serialization (= 2.5.0)
+    - AFNetworking/UIKit (= 2.5.0)
+  - AFNetworking/NSURLConnection (2.5.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-    - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.4.1):
+  - AFNetworking/NSURLSession (2.5.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.4.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.4.1)
-  - AFNetworking/Security (2.4.1)
-  - AFNetworking/Serialization (2.4.1)
-  - AFNetworking/UIKit (2.4.1):
+  - AFNetworking/Reachability (2.5.0)
+  - AFNetworking/Security (2.5.0)
+  - AFNetworking/Serialization (2.5.0)
+  - AFNetworking/UIKit (2.5.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - DLLog (1.0.1)
   - FDKeychain (1.0.1)
   - NXOAuth2Client (1.2.8)
   - OMGHTTPURLRQ (2.1):
-    - OMGHTTPURLRQ/FormURLEncode
-    - OMGHTTPURLRQ/RQ
-    - OMGHTTPURLRQ/UserAgent
-  - OMGHTTPURLRQ/FormURLEncode (2.1):
-    - OMGHTTPURLRQ/FormURLEncode
-    - OMGHTTPURLRQ/UserAgent
+    - OMGHTTPURLRQ/RQ (= 2.1)
+  - OMGHTTPURLRQ/FormURLEncode (2.1)
   - OMGHTTPURLRQ/RQ (2.1):
     - OMGHTTPURLRQ/FormURLEncode
     - OMGHTTPURLRQ/UserAgent
-  - OMGHTTPURLRQ/UserAgent (2.1):
-    - OMGHTTPURLRQ/FormURLEncode
-    - OMGHTTPURLRQ/UserAgent
-  - PromiseKit (1.0):
-    - PromiseKit/NSNotificationCenter
-    - PromiseKit/NSURLConnection
-    - PromiseKit/Pause
-    - PromiseKit/UIActionSheet
-    - PromiseKit/UIAlertView
-    - PromiseKit/UIView
-    - PromiseKit/UIViewController
-    - PromiseKit/Until
-    - PromiseKit/When
-  - PromiseKit/NSNotificationCenter (1.0):
+  - OMGHTTPURLRQ/UserAgent (2.1)
+  - PromiseKit (1.2):
+    - PromiseKit/CALayer (= 1.2)
+    - PromiseKit/NSNotificationCenter (= 1.2)
+    - PromiseKit/NSURLConnection (= 1.2)
+    - PromiseKit/Pause (= 1.2)
+    - PromiseKit/UIActionSheet (= 1.2)
+    - PromiseKit/UIAlertView (= 1.2)
+    - PromiseKit/UIView (= 1.2)
+    - PromiseKit/UIViewController (= 1.2)
+    - PromiseKit/Until (= 1.2)
+    - PromiseKit/When (= 1.2)
+  - PromiseKit/CALayer (1.2):
     - PromiseKit/Promise
-  - PromiseKit/NSURLConnection (1.0):
+  - PromiseKit/NSNotificationCenter (1.2):
+    - PromiseKit/Promise
+  - PromiseKit/NSURLConnection (1.2):
     - OMGHTTPURLRQ
     - PromiseKit/Promise
-  - PromiseKit/Pause (1.0):
+  - PromiseKit/Pause (1.2):
     - PromiseKit/Promise
-  - PromiseKit/Promise (1.0)
-  - PromiseKit/UIActionSheet (1.0):
+  - PromiseKit/Promise (1.2)
+  - PromiseKit/UIActionSheet (1.2):
     - PromiseKit/Promise
-  - PromiseKit/UIAlertView (1.0):
+  - PromiseKit/UIAlertView (1.2):
     - PromiseKit/Promise
-  - PromiseKit/UIView (1.0):
+  - PromiseKit/UIView (1.2):
     - PromiseKit/Promise
-  - PromiseKit/UIViewController (1.0):
+  - PromiseKit/UIViewController (1.2):
     - PromiseKit/Promise
-  - PromiseKit/Until (1.0):
+  - PromiseKit/Until (1.2):
     - PromiseKit/Promise
     - PromiseKit/When
-  - PromiseKit/When (1.0):
+  - PromiseKit/When (1.2):
     - PromiseKit/Promise
 
 DEPENDENCIES:
@@ -76,11 +73,11 @@ DEPENDENCIES:
   - PromiseKit (~> 1.0)
 
 SPEC CHECKSUMS:
-  AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
+  AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
   DLLog: 72ee31e3934ec41e213997418c8c9950a80103bb
   FDKeychain: 2c1a34b3d4fa6f8c53b2b57bb31fe76c7ed67cc4
   NXOAuth2Client: fa81be68c9ce628202028ae037c9c92cfbb37865
-  OMGHTTPURLRQ: 16564bcee86d8dfa298b65cdf60015c3065f67df
-  PromiseKit: 3a8eb40bb66c8f74ebd629f03ad8b0d5581a744c
+  OMGHTTPURLRQ: f8c515dfd2f57a5d74c710978f600231f52afec5
+  PromiseKit: 89cb68ff4093e71221a63ca7272d427bf34c4560
 
-COCOAPODS: 0.34.4
+COCOAPODS: 0.35.0
