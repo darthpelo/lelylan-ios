@@ -192,7 +192,7 @@
     }];
 }
 
-- (void)testUpdateADeviceMethod {
+- (void)DISABLED_testUpdateADeviceMethod {
     NSString *deviceID = @"544bb0fee723c25f0c000025";
     
     NSDictionary *parameters = @{
@@ -224,7 +224,7 @@
     }];
 }
 
-- (void)testUpdateDevicePropertiesMethod {
+- (void)DISABLED_testUpdateDevicePropertiesMethod {
     NSString *deviceID = @"544bb0fee723c25f0c000025";
     
     NSDictionary *properties = @{
