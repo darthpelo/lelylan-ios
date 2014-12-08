@@ -4,7 +4,12 @@ lelylan-ios
 [Lelylan](http://www.lelylan.com/) iOS library **work in progress**
 
 Building the Connected Home with a unified APIs and tools that instantly enable
-businesses to sell connected products
+businesses to sell connected products.
+
+How to use
+===========
+
+This project is a library, then the class *ViewController.m* serves only to run the Unit Test. To understand how to use this library, use all the tests that are in **LLLDevicesManagerTests.m**, showing the operation of each API.
 
 Components tested and completed.
 ===========
@@ -21,8 +26,7 @@ With the Lelylan's server response, this method send the token request:
 - (void)authenticationOpenURL:(NSURL *)openURL;
 ```
 
-Devices API
-===========
+##Devices API
 
 * Returns extended information for a given device identified from its ID:
 ```Objective-C
@@ -73,3 +77,8 @@ Devices API
              success:(void(^)(id responseData))success 
              failure:(void(^)(NSError *error))failure;
 ```
+
+Credits
+===========
+
+[Andrea Reginato](https://github.com/andreareginato)
