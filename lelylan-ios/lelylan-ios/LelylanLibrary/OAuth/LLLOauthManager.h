@@ -26,4 +26,9 @@
  */
 - (void)authenticationOpenURL:(NSURL *)openURL;
 
+/**
+ *    For security reasons an access token expires every 24 hours. To get a new one use the refresh token you previously received together with the access token.
+ */
+- (void)refreshAccessToken;
+
 @end

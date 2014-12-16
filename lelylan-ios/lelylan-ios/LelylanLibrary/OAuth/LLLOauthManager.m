@@ -56,6 +56,11 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
     }
 }
 
+- (void)refreshAccessToken
+{
+    [self tokenRefresh];
+}
+
 #pragma mark - Private methods
 
 - (void)tokenRequest:(NSString *)code
@@ -86,7 +91,8 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
                                           @"token_type": responseObject[@"token_type"],
                                           @"expires_in": responseObject[@"expires_in"],
                                           @"scope": responseObject[@"scope"],
-                                          @"refresh_token": responseObject[@"refresh_token"]
+                                          @"refresh_token": responseObject[@"refresh_token"],
+                                          @"start_time": [NSDate date]
                                           };
               
               NSError *error = nil;
@@ -111,5 +117,63 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
 }
 
 
+- (void)tokenRefresh
+{
+    NSError *error;
+    NSDictionary *token = [FDKeychain itemForKey:@"com.lelylanios.tokendata"
+                                      forService:@"lelylan"
+                                           error:&error
+                           ];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    NSDictionary *parameters = @{@"client_id": kClientID,
+                                 @"client_secret": kClientSecret,
+                                 @"grant_type": @"refresh_token",
+                                 @"refresh_token":token[@"refresh_token"]
+                                 };
+    
+    [manager POST:kTokenURL
+       parameters:parameters
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              /*
+               Printing description of responseObject:
+               {
+               "access_token" = 264b837f91c1accaa863080842bb222dc3f37a715be1f1da10593eed662b1534;
+               "expires_in" = 600;
+               "refresh_token" = 298fb052dd8d198d2c6dbe1515e6d3de741c583755b825860964217ab913de07;
+               scope = resources;
+               "token_type" = bearer;
+               }
+               */
+              NSDictionary *tokenData = @{
+                                          @"access_token": responseObject[@"access_token"],
+                                          @"token_type": responseObject[@"token_type"],
+                                          @"expires_in": responseObject[@"expires_in"],
+                                          @"scope": responseObject[@"scope"],
+                                          @"refresh_token": responseObject[@"refresh_token"],
+                                          @"start_time": [NSDate date]
+                                          };
+              
+              NSError *error = nil;
+              
+              if ([FDKeychain saveItem:tokenData
+                                forKey:@"com.lelylanios.tokendata"
+                            forService:@"lelylan"
+                                 error:&error
+                   ] == NO) {
+                  
+                  if (error) {
+                      NSLog(@"%s %@", __PRETTY_FUNCTION__, error);
+                  }
+              } else {
+                  NSLog(@"%s Token saved", __PRETTY_FUNCTION__);
+              }
+              
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              NSLog(@"Error: %@", error);
+          }
+     ];
+}
 
 @end

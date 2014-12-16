@@ -341,13 +341,18 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
                              forService:@"lelylan"
                                   error:&error
                   ];
-//    NSAssert(!error, @"Failed retrive token");
+    
+    NSDate *endTime = [NSDate date];
+    NSDate *startTime = self.tokenData[@"start_time"];
+    NSTimeInterval diff = [endTime timeIntervalSinceDate:startTime];
+    DLLogDebug(@"Time difference is: %f", diff);
+    
+   /*
+    NSAssert(!error, @"Failed retrive token");
     if (error) {
-        /**
-         *  OAuth 2.0 request with generic scope.
-         */
         [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObjects:@"resources", @"privates", nil]];
     }
+   */
 }
 
 @end
