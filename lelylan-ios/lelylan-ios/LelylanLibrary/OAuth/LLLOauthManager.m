@@ -56,9 +56,11 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
     }
 }
 
-- (void)refreshAccessToken
+- (void)refreshAccessToken:(void(^)())block
 {
-    [self tokenRefresh];
+    [self tokenRefresh:^{
+        block();
+    }];
 }
 
 #pragma mark - Private methods
@@ -117,7 +119,7 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
 }
 
 
-- (void)tokenRefresh
+- (void)tokenRefresh:(void(^)())block
 {
     NSError *error;
     NSDictionary *token = [FDKeychain itemForKey:@"com.lelylanios.tokendata"
@@ -168,6 +170,7 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
                   }
               } else {
                   NSLog(@"%s Token saved", __PRETTY_FUNCTION__);
+                  block();
               }
               
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
