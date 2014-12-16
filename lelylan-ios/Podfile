@@ -7,7 +7,6 @@ target 'lelylan-ios' do
 
 pod 'AFNetworking', '~> 2.0'
 pod 'NXOAuth2Client', '~> 1.2.8'
-pod 'PromiseKit', '~> 1.0'
 pod "FDKeychain", "~> 1.0.0"
 pod 'DLLog', '~> 1.0.1'
 
