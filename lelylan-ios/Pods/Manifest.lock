@@ -20,18 +20,21 @@ PODS:
   - AFNetworking/UIKit (2.5.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - BoltsTask (1.1.0)
   - DLLog (1.0.1)
   - FDKeychain (1.0.1)
   - NXOAuth2Client (1.2.8)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
+  - BoltsTask (~> 1.1.0)
   - DLLog (~> 1.0.1)
   - FDKeychain (~> 1.0.0)
   - NXOAuth2Client (~> 1.2.8)
 
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
+  BoltsTask: 11cea41b3e62af557986332f6155e1822ce7b4e0
   DLLog: 72ee31e3934ec41e213997418c8c9950a80103bb
   FDKeychain: 2c1a34b3d4fa6f8c53b2b57bb31fe76c7ed67cc4
   NXOAuth2Client: fa81be68c9ce628202028ae037c9c92cfbb37865

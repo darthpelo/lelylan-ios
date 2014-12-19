@@ -5,6 +5,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'lelylan-ios' do
 
+pod 'BoltsTask', '~> 1.1.0'
 pod 'AFNetworking', '~> 2.0'
 pod 'NXOAuth2Client', '~> 1.2.8'
 pod "FDKeychain", "~> 1.0.0"
