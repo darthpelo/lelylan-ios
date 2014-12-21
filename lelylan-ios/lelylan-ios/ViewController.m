@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 #import "LLLOauthManager.h"
+#import "LLLDevicesManager+Bolts.h"
 
 @interface ViewController ()
 
@@ -26,10 +27,28 @@
 {
     [super viewDidAppear:animated];
     
-    /**
-     *  OAuth 2.0 request with generic scope.
-     */
-//    [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObjects:@"resources", @"privates", nil]];
+    if ([[LLLOauthManager sharedInstance] isAuthenticated] == YES) {
+        [[[LLLDevicesManager sharedInstance] getAllDevices:nil] continueWithBlock:^id(BFTask *task) {
+            if (!task.error) {
+                NSArray *list = task.result;
+                NSLog(@"%@", list);
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mesasggio"
+                                                                message:@"No Devices"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Ok"
+                                                      otherButtonTitles: nil];
+                
+                [alert show];
+            }
+            return nil;
+        }];
+    } else {
+        /**
+         *  OAuth 2.0 request with generic scope.
+         */
+        [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObjects:@"resources", @"privates", nil]];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

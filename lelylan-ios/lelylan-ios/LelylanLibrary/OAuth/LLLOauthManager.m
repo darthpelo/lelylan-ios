@@ -29,6 +29,23 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
 }
 
 #pragma mark - Public methods
+
+- (BOOL)isAuthenticated
+{
+    NSError *error;
+    
+    NSDictionary *token = [FDKeychain itemForKey:@"com.lelylanios.tokendata"
+                forService:@"lelylan"
+                     error:&error
+     ];
+    
+    if (!token || error) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
 - (void)authenticationRequest:(NSSet *)scope
 {
     // [NSSet setWithObject:@"resources"]
@@ -56,10 +73,13 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
     }
 }
 
-- (void)refreshAccessToken:(void(^)())block
+- (void)refreshAccessToken:(void(^)(NSDictionary *token))success
+                   failure:(void(^)(NSError *error))failure;
 {
-    [self tokenRefresh:^{
-        block();
+    [self tokenRefresh:^(NSDictionary *token) {
+        success(token);
+    } failure:^(NSError *error) {
+        failure(error);
     }];
 }
 
@@ -119,13 +139,18 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
 }
 
 
-- (void)tokenRefresh:(void(^)())block
+- (void)tokenRefresh:(void(^)(NSDictionary *token))success
+             failure:(void(^)(NSError *error))failure
 {
     NSError *error;
     NSDictionary *token = [FDKeychain itemForKey:@"com.lelylanios.tokendata"
                                       forService:@"lelylan"
                                            error:&error
                            ];
+    
+    if (error) {
+        failure(error);
+    }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -167,14 +192,16 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
                   
                   if (error) {
                       NSLog(@"%s %@", __PRETTY_FUNCTION__, error);
+                      failure(error);
                   }
               } else {
                   NSLog(@"%s Token saved", __PRETTY_FUNCTION__);
-                  block();
+                  success(tokenData);
               }
               
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               NSLog(@"Error: %@", error);
+              failure(error);
           }
      ];
 }

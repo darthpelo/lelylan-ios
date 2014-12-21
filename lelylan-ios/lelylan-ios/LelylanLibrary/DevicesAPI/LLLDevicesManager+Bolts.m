@@ -10,4 +10,43 @@
 
 @implementation LLLDevicesManager (Bolts)
 
+- (BFTask *)getDevice:(NSString *)deviceID
+{
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self getDevice:deviceID
+            success:^(NSDictionary *device) {
+                [task setResult:device];
+            } failure:^(NSError *error) {
+                [task setError:error];
+            }];
+    
+    return task.task;
+}
+
+- (BFTask *)getDevicePrivate:(NSString *)deviceID
+{
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self getDevicePrivate:deviceID success:^(id responseData) {
+        [task setResult:responseData];
+    } failure:^(NSError *error) {
+        [task setError:error];
+    }];
+    
+    return task.task;
+}
+
+- (BFTask *)getAllDevices:(NSDictionary *)parameters
+{
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self getAllDevices:parameters success:^(NSArray *devices) {
+        [task setResult:devices];
+    } failure:^(NSError *error) {
+        [task setError:error];
+    }];
+    
+    return task.task;
+}
 @end

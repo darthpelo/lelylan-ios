@@ -9,6 +9,7 @@
 #import "LLLDevicesManager.h"
 #import "LLLOauthManager.h"
 
+#import <Bolts.h>
 #import "FDKeychain.h"
 #import "AFNetworking.h"
 #import "DLLog.h"
@@ -47,24 +48,30 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     // Check token
-    __weak __typeof(self)weakSelf = self;
-    [self getToken:^(BOOL tokenPresent) {
-        // Headers
-        NSString *value = [NSString stringWithFormat:@"Bearer %@", weakSelf.tokenData[@"access_token"]];
-        [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+    [[self getToken] continueWithBlock:^id(BFTask *task) {
+        if (!task.error) {
+            // Headers
+            NSDictionary *token = task.result;
+            NSString *value = [NSString stringWithFormat:@"Bearer %@", token[@"access_token"]];
+            [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+            
+            // URL
+            NSString *URL = [NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID];
+            
+            [manager GET:URL
+              parameters:nil
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     DLLogDebug(@"%@", responseObject);
+                     success(responseObject);
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     DLLogError(@"%@", error.debugDescription);
+                     failure(error);
+                 }];
+        } else {
+            failure(task.error);
+        }
         
-        // URL
-        NSString *URL = [NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID];
-        
-        [manager GET:URL
-          parameters:nil
-             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 DLLogDebug(@"%@", responseObject);
-                 success(responseObject);
-             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 DLLogError(@"%@", error.debugDescription);
-                 failure(error);
-             }];
+        return nil;
     }];
 }
 
@@ -73,24 +80,29 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     // Check token
-    __weak __typeof(self)weakSelf = self;
-    [self getToken:^(BOOL tokenPresent){
-        // Headers
-        NSString *value = [NSString stringWithFormat:@"Bearer %@", weakSelf.tokenData[@"access_token"]];
-        [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+    [[self getToken] continueWithBlock:^id(BFTask *task) {
+        if (!task.error) {
+            // Headers
+            NSDictionary *token = task.result;
+            NSString *value = [NSString stringWithFormat:@"Bearer %@", token[@"access_token"]];
+            [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+            
+            // URL
+            NSString *URL = [NSString stringWithFormat:kGetDevicePrivateInfoURL, deviceID];
+            
+            [manager GET:URL
+              parameters:nil
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     DLLogDebug(@"%@", responseObject);
+                     success(responseObject);
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     DLLogError(@"%@", error.debugDescription);
+                     failure(error);
+                 }];
+        } else
+            failure(task.error);
         
-        // URL
-        NSString *URL = [NSString stringWithFormat:kGetDevicePrivateInfoURL, deviceID];
-        
-        [manager GET:URL
-          parameters:nil
-             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 DLLogDebug(@"%@", responseObject);
-                 success(responseObject);
-             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 DLLogError(@"%@", error.debugDescription);
-                 failure(error);
-             }];
+        return nil;
     }];
 }
 
@@ -99,21 +111,26 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     // Check token
-    __weak __typeof(self)weakSelf = self;
-    [self getToken:^(BOOL tokenPresent){
-        // Headers
-        NSString *value = [NSString stringWithFormat:@"Bearer %@", weakSelf.tokenData[@"access_token"]];
-        [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+    [[self getToken] continueWithBlock:^id(BFTask *task) {
+        if (!task.error) {
+            // Headers
+            NSDictionary *token = task.result;
+            NSString *value = [NSString stringWithFormat:@"Bearer %@", token[@"access_token"]];
+            [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+            
+            [manager GET:kGetDeviceURL
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     DLLogDebug(@"%@", responseObject);
+                     success(responseObject);
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     DLLogError(@"%@", error.debugDescription);
+                     failure(error);
+                 }];
+        } else
+            failure(task.error);
         
-        [manager GET:kGetDeviceURL
-          parameters:parameters
-             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 DLLogDebug(@"%@", responseObject);
-                 success(responseObject);
-             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 DLLogError(@"%@", error.debugDescription);
-                 failure(error);
-             }];
+        return nil;
     }];
     
 }
@@ -122,59 +139,65 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 - (void)createDevice:(NSDictionary *)parameters success:(void(^)(id responseData))success failure:(void(^)(NSError *error))failure
 {
     // Check token
-    __weak __typeof(self)weakSelf = self;
-    [self getToken:^(BOOL tokenPresent){
-        NSURL *url = [NSURL URLWithString:kGetDeviceURL];
-        
-        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSString *value = [NSString stringWithFormat:@"Bearer %@", weakSelf.tokenData[@"access_token"]];
-        config.HTTPAdditionalHeaders = @{
-                                         @"Authorization": value,
-                                         @"Content-Type"  : @"application/json"
-                                         };
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        request.HTTPMethod = @"POST";
-        
-        NSError *error = nil;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:parameters
-                                                       options:kNilOptions error:&error];
-        
-        if (!error) {
-            NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
-                                                                       fromData:data
-                                                              completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-                                                                  if (!error) {
-                                                                      NSError* error;
-                                                                      NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                                           options:kNilOptions
-                                                                                                                             error:&error];
+    [[self getToken] continueWithBlock:^id(BFTask *task) {
+        if (!task.error) {
+            // Headers
+            NSDictionary *token = task.result;
+            NSURL *url = [NSURL URLWithString:kGetDeviceURL];
+            
+            NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+            NSString *value = [NSString stringWithFormat:@"Bearer %@", token[@"access_token"]];
+            config.HTTPAdditionalHeaders = @{
+                                             @"Authorization": value,
+                                             @"Content-Type"  : @"application/json"
+                                             };
+            
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+            request.HTTPMethod = @"POST";
+            
+            NSError *error = nil;
+            NSData *data = [NSJSONSerialization dataWithJSONObject:parameters
+                                                           options:kNilOptions error:&error];
+            
+            if (!error) {
+                NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
+                                                                           fromData:data
+                                                                  completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
                                                                       if (!error) {
-                                                                          DLLogDebug(@"%@", json);
-                                                                          
-                                                                          if (json[@"error"]) {
-                                                                              NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey: json[@"error"][@"description"]};
-                                                                              error = [[NSError alloc] initWithDomain:json[@"error"][@"code"]
-                                                                                                                 code:[json[@"status"] integerValue]
-                                                                                                             userInfo:errorDictionary];
+                                                                          NSError* error;
+                                                                          NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                               options:kNilOptions
+                                                                                                                                 error:&error];
+                                                                          if (!error) {
+                                                                              DLLogDebug(@"%@", json);
                                                                               
-                                                                              failure(error);
+                                                                              if (json[@"error"]) {
+                                                                                  NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey: json[@"error"][@"description"]};
+                                                                                  error = [[NSError alloc] initWithDomain:json[@"error"][@"code"]
+                                                                                                                     code:[json[@"status"] integerValue]
+                                                                                                                 userInfo:errorDictionary];
+                                                                                  
+                                                                                  failure(error);
+                                                                              } else {
+                                                                                  success(json);
+                                                                              }
                                                                           } else {
-                                                                              success(json);
+                                                                              failure(error);
                                                                           }
                                                                       } else {
                                                                           failure(error);
                                                                       }
-                                                                  } else {
-                                                                      failure(error);
                                                                   }
-                                                              }
-                                                  ];
-            
-            [uploadTask resume];
-        }
+                                                      ];
+                
+                [uploadTask resume];
+            }
+        } else
+            failure(task.error);
+        
+        return nil;
     }];
     
 }
@@ -182,119 +205,131 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
 - (void)updateDevice:(NSString *)deviceID parameters:(NSDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     // Check token
-    __weak __typeof(self)weakSelf = self;
-    [self getToken:^(BOOL tokenPresent){
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID]];
-        
-        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSString *value = [NSString stringWithFormat:@"Bearer %@", weakSelf.tokenData[@"access_token"]];
-        config.HTTPAdditionalHeaders = @{
-                                         @"Authorization": value,
-                                         @"Content-Type"  : @"application/json"
-                                         };
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        request.HTTPMethod = @"PUT";
-        
-        NSError *error = nil;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:parameters
-                                                       options:kNilOptions error:&error];
-        
-        if (!error) {
-            NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
-                                                                       fromData:data
-                                                              completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-                                                                  if (!error) {
-                                                                      NSError* error;
-                                                                      NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                                           options:kNilOptions
-                                                                                                                             error:&error];
+    [[self getToken] continueWithBlock:^id(BFTask *task) {
+        if (!task.error) {
+            // Headers
+            NSDictionary *token = task.result;
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID]];
+            
+            NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+            NSString *value = [NSString stringWithFormat:@"Bearer %@", token[@"access_token"]];
+            config.HTTPAdditionalHeaders = @{
+                                             @"Authorization": value,
+                                             @"Content-Type"  : @"application/json"
+                                             };
+            
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+            request.HTTPMethod = @"PUT";
+            
+            NSError *error = nil;
+            NSData *data = [NSJSONSerialization dataWithJSONObject:parameters
+                                                           options:kNilOptions error:&error];
+            
+            if (!error) {
+                NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
+                                                                           fromData:data
+                                                                  completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
                                                                       if (!error) {
-                                                                          DLLogDebug(@"%@", json);
-                                                                          
-                                                                          if (json[@"error"]) {
-                                                                              NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey: json[@"error"][@"description"]};
-                                                                              error = [[NSError alloc] initWithDomain:json[@"error"][@"code"]
-                                                                                                                 code:[json[@"status"] integerValue]
-                                                                                                             userInfo:errorDictionary];
+                                                                          NSError* error;
+                                                                          NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                               options:kNilOptions
+                                                                                                                                 error:&error];
+                                                                          if (!error) {
+                                                                              DLLogDebug(@"%@", json);
                                                                               
-                                                                              failure(error);
+                                                                              if (json[@"error"]) {
+                                                                                  NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey: json[@"error"][@"description"]};
+                                                                                  error = [[NSError alloc] initWithDomain:json[@"error"][@"code"]
+                                                                                                                     code:[json[@"status"] integerValue]
+                                                                                                                 userInfo:errorDictionary];
+                                                                                  
+                                                                                  failure(error);
+                                                                              } else {
+                                                                                  success(json);
+                                                                              }
                                                                           } else {
-                                                                              success(json);
+                                                                              failure(error);
                                                                           }
                                                                       } else {
                                                                           failure(error);
                                                                       }
-                                                                  } else {
-                                                                      failure(error);
                                                                   }
-                                                              }
-                                                  ];
-            
-            [uploadTask resume];
-        }
+                                                      ];
+                
+                [uploadTask resume];
+            }
+        } else
+            failure(task.error);
+        
+        return nil;
     }];
 }
 
 - (void)updateDeviceProperties:(NSString *)deviceID properties:(NSDictionary *)properties success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     // Check token
-    __weak __typeof(self)weakSelf = self;
-    [self getToken:^(BOOL tokenPresent){
-        NSString *strUrl = [NSString stringWithFormat:kPutDevicePropertiesURL, deviceID];
-        NSURL *url = [NSURL URLWithString:strUrl];
-        
-        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSString *value = [NSString stringWithFormat:@"Bearer %@", weakSelf.tokenData[@"access_token"]];
-        config.HTTPAdditionalHeaders = @{
-                                         @"Authorization": value,
-                                         @"Content-Type"  : @"application/json"
-                                         };
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        request.HTTPMethod = @"PUT";
-        
-        NSError *error = nil;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:properties
-                                                       options:kNilOptions error:&error];
-        
-        if (!error) {
-            NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
-                                                                       fromData:data
-                                                              completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-                                                                  if (!error) {
-                                                                      NSError* error;
-                                                                      NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                                           options:kNilOptions
-                                                                                                                             error:&error];
+    [[self getToken] continueWithBlock:^id(BFTask *task) {
+        if (!task.error) {
+            // Headers
+            NSDictionary *token = task.result;
+            NSString *strUrl = [NSString stringWithFormat:kPutDevicePropertiesURL, deviceID];
+            NSURL *url = [NSURL URLWithString:strUrl];
+            
+            NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+            NSString *value = [NSString stringWithFormat:@"Bearer %@", token[@"access_token"]];
+            config.HTTPAdditionalHeaders = @{
+                                             @"Authorization": value,
+                                             @"Content-Type"  : @"application/json"
+                                             };
+            
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+            request.HTTPMethod = @"PUT";
+            
+            NSError *error = nil;
+            NSData *data = [NSJSONSerialization dataWithJSONObject:properties
+                                                           options:kNilOptions error:&error];
+            
+            if (!error) {
+                NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
+                                                                           fromData:data
+                                                                  completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
                                                                       if (!error) {
-                                                                          DLLogDebug(@"%@", json);
-                                                                          
-                                                                          if (json[@"error"]) {
-                                                                              NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey: json[@"error"][@"description"]};
-                                                                              error = [[NSError alloc] initWithDomain:json[@"error"][@"code"]
-                                                                                                                 code:[json[@"status"] integerValue]
-                                                                                                             userInfo:errorDictionary];
+                                                                          NSError* error;
+                                                                          NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                                               options:kNilOptions
+                                                                                                                                 error:&error];
+                                                                          if (!error) {
+                                                                              DLLogDebug(@"%@", json);
                                                                               
-                                                                              failure(error);
+                                                                              if (json[@"error"]) {
+                                                                                  NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey: json[@"error"][@"description"]};
+                                                                                  error = [[NSError alloc] initWithDomain:json[@"error"][@"code"]
+                                                                                                                     code:[json[@"status"] integerValue]
+                                                                                                                 userInfo:errorDictionary];
+                                                                                  
+                                                                                  failure(error);
+                                                                              } else {
+                                                                                  success(json);
+                                                                              }
                                                                           } else {
-                                                                              success(json);
+                                                                              failure(error);
                                                                           }
                                                                       } else {
                                                                           failure(error);
                                                                       }
-                                                                  } else {
-                                                                      failure(error);
                                                                   }
-                                                              }
-                                                  ];
-            
-            [uploadTask resume];
-        }
+                                                      ];
+                
+                [uploadTask resume];
+            }
+        } else
+            failure(task.error);
+        
+        return nil;
     }];
 }
 
@@ -305,38 +340,45 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     // Check token
-    __weak __typeof(self)weakSelf = self;
-    [self getToken:^(BOOL tokenPresent){
-        // Headers
-        NSString *value = [NSString stringWithFormat:@"Bearer %@", weakSelf.tokenData[@"access_token"]];
-        [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+    [[self getToken] continueWithBlock:^id(BFTask *task) {
+        if (!task.error) {
+            // Headers
+            NSDictionary *token = task.result;
+            NSString *value = [NSString stringWithFormat:@"Bearer %@", token[@"access_token"]];
+            [manager.requestSerializer setValue:value forHTTPHeaderField:@"Authorization"];
+            
+            // URL
+            NSString *URL = [NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID];
+            
+            [manager DELETE:URL
+                 parameters:nil
+                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        DLLogDebug(@"%@", responseObject);
+                        success(responseObject);
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        DLLogError(@"%@", error.debugDescription);
+                        failure(error);
+                    }
+             ];
+        } else
+            failure(task.error);
         
-        // URL
-        NSString *URL = [NSString stringWithFormat:@"%@%@",kGetDeviceURL, deviceID];
-        
-        [manager DELETE:URL
-             parameters:nil
-                success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    DLLogDebug(@"%@", responseObject);
-                    success(responseObject);
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    DLLogError(@"%@", error.debugDescription);
-                    failure(error);
-                }
-         ];
+        return nil;
     }];
 }
 
 #pragma mark - Private methods
-- (void)getToken:(void(^)(BOOL tokenPresent))block
+- (BFTask *)getToken
 {
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
     NSError *error;
     _tokenData = [FDKeychain itemForKey:@"com.lelylanios.tokendata"
                              forService:@"lelylan"
                                   error:&error
                   ];
     if (!self.tokenData) {
-        block(NO);
+        [task setError:error];
         [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObjects:@"resources", @"privates", nil]];
     } else {
         NSDate *endTime = [NSDate date];
@@ -344,13 +386,20 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
         NSTimeInterval diff = [endTime timeIntervalSinceDate:startTime];
         DLLogDebug(@"Time difference is: %f", diff);
         
+        __weak __typeof(self)weakSelf = self;
+        
         if (diff > [self.tokenData[@"expires_in"] floatValue]) {
-            [[LLLOauthManager sharedInstance] refreshAccessToken:^{
-                block(YES);
+            [[LLLOauthManager sharedInstance] refreshAccessToken:^(NSDictionary *token) {
+                weakSelf.tokenData = token;
+                [task setResult:token];
+            } failure:^(NSError *error) {
+                [task setError:error];
             }];
         } else
-            block(YES);
+            [task setResult:self.tokenData];
     }
+    
+    return task.task;
 }
 
 @end
