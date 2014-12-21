@@ -12,6 +12,11 @@
 
 + (instancetype)sharedInstance;
 
+/**
+ *    Verify if your logged with Lelylan correctly
+ *
+ *    @return BOOL value, YES if logged, NO otherwise.
+ */
 - (BOOL)isAuthenticated;
 
 /**
