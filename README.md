@@ -89,7 +89,7 @@ For security reasons an access token expires every 24 hours. To get a new one us
              failure:(void(^)(NSError *error))failure;
 ```
 
-###Bolt Version
+###Bolts Version
 
 * Returns extended information for a given device identified from its ID:
 ```Objective-C
