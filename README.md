@@ -16,6 +16,10 @@ Components tested and completed.
 
 ##OAuth 2.0
 
+Verify if your logged with Lelylan correctly:
+```Objective-C
+- (BOOL)isAuthenticated;
+```
 Redirect the user to the authorization endpoint:
 ```Objective-C
 - (void)authenticationRequest:(NSSet *)scope;
@@ -27,6 +31,8 @@ With the Lelylan's server response, this method send the token request:
 ```
 
 ##Devices API
+
+###Block Version
 
 * Returns extended information for a given device identified from its ID:
 ```Objective-C
@@ -76,6 +82,21 @@ With the Lelylan's server response, this method send the token request:
 - (void)deleteDevice:(NSString *)deviceID 
              success:(void(^)(id responseData))success 
              failure:(void(^)(NSError *error))failure;
+```
+
+###Bolt Version
+
+* Returns extended information for a given device identified from its ID:
+```Objective-C
+- (BFTask *)getDevice:(NSString *)deviceID;
+```
+* Returns private information for a given device identified from its ID:
+```Objective-C
+- (BFTask *)getDevicePrivate:(NSString *)deviceID;
+```
+* Returns a list of owned devices:
+```Objective-C
+- (BFTask *)getAllDevices:(NSDictionary *)parameters;
 ```
 
 Feedback
