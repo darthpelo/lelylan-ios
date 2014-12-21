@@ -130,6 +130,7 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
                   }
               } else {
                   NSLog(@"%s Token saved", __PRETTY_FUNCTION__);
+                  [[NSNotificationCenter defaultCenter] postNotificationName:@"com.lelylanios.tokenSaved" object:self];
               }
               
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
