@@ -71,7 +71,7 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"device"];
     
-    NSString *deviceID = @"544bb0fee723c25f0c000025";
+    NSString *deviceID = @"544baca9e723c2b6af00002a";
     
     [s1 getDevice:deviceID
           success:^(id responseData) {
@@ -96,7 +96,7 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"device"];
     
-    NSString *deviceID = @"544bb0fee723c25f0c000025";
+    NSString *deviceID = @"544baca9e723c2b6af00002a";
     
     [s1 getDevicePrivate:deviceID
           success:^(id responseData) {
