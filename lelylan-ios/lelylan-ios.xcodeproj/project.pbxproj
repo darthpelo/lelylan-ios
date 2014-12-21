@@ -19,6 +19,7 @@
 		BE5677D119F2A255003F8EE5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE5677CF19F2A255003F8EE5 /* LaunchScreen.xib */; };
 		BE5677EA19F2A49D003F8EE5 /* LLLOauthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5677E919F2A49D003F8EE5 /* LLLOauthManager.m */; };
 		BE5677EC19F2B8B3003F8EE5 /* LLLOAuthTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5677EB19F2B8B3003F8EE5 /* LLLOAuthTests.m */; };
+		BE9875CD1A44D3AC0052F6EB /* LLLDevicesManager+Bolts.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9875CC1A44D3AC0052F6EB /* LLLDevicesManager+Bolts.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		BE5677E819F2A49D003F8EE5 /* LLLOauthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLLOauthManager.h; path = LelylanLibrary/OAuth/LLLOauthManager.h; sourceTree = "<group>"; };
 		BE5677E919F2A49D003F8EE5 /* LLLOauthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLLOauthManager.m; path = LelylanLibrary/OAuth/LLLOauthManager.m; sourceTree = "<group>"; };
 		BE5677EB19F2B8B3003F8EE5 /* LLLOAuthTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLLOAuthTests.m; sourceTree = "<group>"; };
+		BE9875CB1A44D3AC0052F6EB /* LLLDevicesManager+Bolts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LLLDevicesManager+Bolts.h"; path = "LelylanLibrary/DevicesAPI/LLLDevicesManager+Bolts.h"; sourceTree = "<group>"; };
+		BE9875CC1A44D3AC0052F6EB /* LLLDevicesManager+Bolts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LLLDevicesManager+Bolts.m"; path = "LelylanLibrary/DevicesAPI/LLLDevicesManager+Bolts.m"; sourceTree = "<group>"; };
 		CC4D1D760F9D5B13FE0F59AF /* libPods-lelylan-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-lelylan-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D45EF2B4076974DCB2BDBD /* Pods-lelylan-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lelylan-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-lelylan-ios/Pods-lelylan-ios.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,6 +103,8 @@
 				BE3B0B6019F5B13A00A79C6C /* LLLDevice.m */,
 				BE3B0B6219F5B14A00A79C6C /* LLLDevicesManager.h */,
 				BE3B0B6319F5B14A00A79C6C /* LLLDevicesManager.m */,
+				BE9875CB1A44D3AC0052F6EB /* LLLDevicesManager+Bolts.h */,
+				BE9875CC1A44D3AC0052F6EB /* LLLDevicesManager+Bolts.m */,
 			);
 			name = "Devices API";
 			sourceTree = "<group>";
@@ -326,6 +331,7 @@
 				BE5677C919F2A255003F8EE5 /* ViewController.m in Sources */,
 				BE5677C619F2A255003F8EE5 /* AppDelegate.m in Sources */,
 				BE3B0B6419F5B14A00A79C6C /* LLLDevicesManager.m in Sources */,
+				BE9875CD1A44D3AC0052F6EB /* LLLDevicesManager+Bolts.m in Sources */,
 				BE5677C319F2A255003F8EE5 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

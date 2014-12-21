@@ -116,7 +116,7 @@
     }];
 }
 
-- (void)DISABLED_testGetAllDevicesMethods {
+- (void)testGetAllDevicesMethods {
     LLLDevicesManager *s1 = [self createUniqueInstance];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"devices"];

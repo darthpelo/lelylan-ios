@@ -12,6 +12,8 @@
 
 + (instancetype)sharedInstance;
 
+- (BOOL)isAuthenticated;
+
 /**
  *  Redirect the user to the authorization endpoint.
  *
@@ -25,5 +27,11 @@
  *  @param openURL The openURL in the server response.
  */
 - (void)authenticationOpenURL:(NSURL *)openURL;
+
+/**
+ *    For security reasons an access token expires every 24 hours. To get a new one use the refresh token you previously received together with the access token.
+ */
+- (void)refreshAccessToken:(void(^)(NSDictionary *token))success
+                   failure:(void(^)(NSError *error))failure;
 
 @end
