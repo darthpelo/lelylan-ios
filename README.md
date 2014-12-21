@@ -117,7 +117,7 @@ Links
 * [GIT Repository](http://github.com/darthpelo/lelylan-ios)
 * [Lelylan Dev Center](http://dev.lelylan.com)
 * [Lelylan Site](http://lelylan.com)
-* [Lelylan Dashboard](http://manage.lelylan.com/home)
+* [Lelylan Dashboard](http://lelylan.github.io/devices-dashboard-ng/#/login)
 
 Authors
 ===========
