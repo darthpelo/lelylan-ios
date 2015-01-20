@@ -106,7 +106,8 @@ static NSString * const kPutDevicePropertiesURL = @"http://api.lelylan.com/devic
     }];
 }
 
-- (void)getAllDevices:(NSDictionary *)parameters success:(void(^)(NSArray *devices))success failure:(void(^)(NSError *error))failure
+- (void)getAllDevices:(NSDictionary *)parameters success:(void(^)(NSArray *devices))success
+              failure:(void(^)(NSError *error))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
