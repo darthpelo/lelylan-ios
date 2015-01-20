@@ -9,7 +9,8 @@ businesses to sell connected products.
 How to use
 ===========
 
-This project is a library, then the class *ViewController.m* serves only to run the Unit Test. To understand how to use this library, use all the tests that are in **LLLDevicesManagerTests.m**, showing the operation of each API.
+The purpose of this project is the development of a library, then the class *ViewController.m* serves to run the Unit Test and to show a simple example. 
+To understand how to use this library, use all the tests that are in **LLLDevicesManagerTests.m**, showing the operation of each API and see the example code.
 
 Components tested and completed.
 ===========
@@ -116,6 +117,7 @@ Links
 * [GIT Repository](http://github.com/darthpelo/lelylan-ios)
 * [Lelylan Dev Center](http://dev.lelylan.com)
 * [Lelylan Site](http://lelylan.com)
+* [Lelylan Dashboard](http://lelylan.github.io/devices-dashboard-ng/#/login)
 
 Authors
 ===========
