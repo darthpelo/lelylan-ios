@@ -1,23 +1,23 @@
 PODS:
-  - AFNetworking (2.5.0):
-    - AFNetworking/NSURLConnection (= 2.5.0)
-    - AFNetworking/NSURLSession (= 2.5.0)
-    - AFNetworking/Reachability (= 2.5.0)
-    - AFNetworking/Security (= 2.5.0)
-    - AFNetworking/Serialization (= 2.5.0)
-    - AFNetworking/UIKit (= 2.5.0)
-  - AFNetworking/NSURLConnection (2.5.0):
+  - AFNetworking (2.5.3):
+    - AFNetworking/NSURLConnection (= 2.5.3)
+    - AFNetworking/NSURLSession (= 2.5.3)
+    - AFNetworking/Reachability (= 2.5.3)
+    - AFNetworking/Security (= 2.5.3)
+    - AFNetworking/Serialization (= 2.5.3)
+    - AFNetworking/UIKit (= 2.5.3)
+  - AFNetworking/NSURLConnection (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.0):
+  - AFNetworking/NSURLSession (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.0)
-  - AFNetworking/Security (2.5.0)
-  - AFNetworking/Serialization (2.5.0)
-  - AFNetworking/UIKit (2.5.0):
+  - AFNetworking/Reachability (2.5.3)
+  - AFNetworking/Security (2.5.3)
+  - AFNetworking/Serialization (2.5.3)
+  - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - BoltsTask (1.1.0)
@@ -33,10 +33,10 @@ DEPENDENCIES:
   - NXOAuth2Client (~> 1.2.8)
 
 SPEC CHECKSUMS:
-  AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
-  BoltsTask: 11cea41b3e62af557986332f6155e1822ce7b4e0
-  DLLog: 72ee31e3934ec41e213997418c8c9950a80103bb
-  FDKeychain: 2c1a34b3d4fa6f8c53b2b57bb31fe76c7ed67cc4
-  NXOAuth2Client: fa81be68c9ce628202028ae037c9c92cfbb37865
+  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
+  BoltsTask: 3e31d95331b2a13e1a1113c1cad4f2e24148b604
+  DLLog: 19055bdfc5dd32a6c9feca45fe2ce938db25d5da
+  FDKeychain: 153d311d5753a52f4ed4817574a466903730c1e7
+  NXOAuth2Client: 98c4d4c594edd2b289cfc34a8928653e1dab7adf
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.37.1

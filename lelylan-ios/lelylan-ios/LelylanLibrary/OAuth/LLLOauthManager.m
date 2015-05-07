@@ -35,15 +35,14 @@ static NSString * const kRedirectURL = @"lelylanios://lelylan";
     NSError *error;
     
     NSDictionary *token = [FDKeychain itemForKey:@"com.lelylanios.tokendata"
-                forService:@"lelylan"
-                     error:&error
-     ];
+                                      forService:@"lelylan"
+                                           error:&error
+                           ];
     
-    if (!token || error) {
+    if (!token || error)
         return NO;
-    } else {
+    else
         return YES;
-    }
 }
 
 - (void)authenticationRequest:(NSSet *)scope
