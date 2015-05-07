@@ -39,6 +39,7 @@
          *  OAuth 2.0 request with generic scope.
          */
         [[LLLOauthManager sharedInstance] authenticationRequest:[NSSet setWithObjects:@"resources", @"privates", nil]];
+        
     }
 }
 
